@@ -1,1 +1,1 @@
-Shumeiko-course
+Project-Shumeiko
