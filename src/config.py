@@ -1,11 +1,16 @@
 from dotenv import load_dotenv
 import os
+
 import urllib.parse
 
 load_dotenv()
 
 SMTP_USER = 'timurmov25@gmail.com'
 SMTP_PASSWORD = 'lzjh dzhm dvsd iydi'
+
+
+
+load_dotenv()
 
 DB_HOST = os.environ.get("DB_HOST")
 DB_PORT = os.environ.get("DB_PORT")
@@ -20,3 +25,7 @@ DB_USER_TEST = os.environ.get("DB_USER_TEST")
 DB_PASS_TEST = os.environ.get('DB_PASS_TEST')
 
 SECRET_AUTH = os.environ.get('SECRET_AUTH')
+DB_PASS = os.environ.get("DB_PASS")
+
+SECRET_AUTH = os.environ.get("SECRET_AUTH")
+
