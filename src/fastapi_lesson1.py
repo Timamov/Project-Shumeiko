@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
@@ -7,19 +6,20 @@ from redis import asyncio as aioredis
 
 from src.auth.base_config import auth_backend, fastapi_users
 from src.auth.schemas import UserCreate, UserRead
-from src.operations.router import router as router_operation
-from src.router import router as router_tasks
-from src.pages.router import router as router_pages
 from src.chat.router import router as router_chat
+from src.operations.router import router as router_operation
+from src.pages.router import router as router_pages
+from src.router import router as router_tasks
 
-app = FastAPI(
-    title="Trading App"
-)
-@app.get('/')
+app = FastAPI(title="Trading App")
+
+
+@app.get("/")
 def checking_out():
-    return {'status': 200}
+    return {"status": 200}
 
-app.mount('/static', StaticFiles(directory='src/static'), name='static')
+
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
@@ -47,4 +47,3 @@ origins = [
 async def startup_event():
     redis = aioredis.from_url("redis://localhost", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
-

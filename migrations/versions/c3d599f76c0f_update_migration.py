@@ -53,12 +53,12 @@
 
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
-revision: str = 'c3d599f76c0f'
-down_revision: Union[str, None] = '127ba0aa9f1b'
+revision: str = "c3d599f76c0f"
+down_revision: Union[str, None] = "127ba0aa9f1b"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -66,35 +66,40 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     # Создание новой таблицы role
     op.create_table(
-        'role',
-        sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('name', sa.String(), nullable=False),
-        sa.Column('permissions', sa.JSON(), nullable=True),
-        sa.PrimaryKeyConstraint('id')
+        "role",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("name", sa.String(), nullable=False),
+        sa.Column("permissions", sa.JSON(), nullable=True),
+        sa.PrimaryKeyConstraint("id"),
     )
     # Удаление внешнего ключа, связанного с таблицей roles
-    op.drop_constraint('users_role_id_fkey', 'users', type_='foreignkey')
+    op.drop_constraint("users_role_id_fkey", "users", type_="foreignkey")
     # Добавление нового внешнего ключа, связанного с таблицей role
-    op.create_foreign_key(None, 'users', 'role', ['role_id'], ['id'])
+    op.create_foreign_key(None, "users", "role", ["role_id"], ["id"])
     # Удаление старой таблицы roles
-    op.drop_table('roles')
+    op.drop_table("roles")
     # Добавление новых колонок в таблицу users
-    op.add_column('users', sa.Column('is_active', sa.Boolean(), nullable=False))
-    op.add_column('users', sa.Column('is_superuser', sa.Boolean(), nullable=False))
-    op.add_column('users', sa.Column('is_verified', sa.Boolean(), nullable=False))
+    op.add_column("users", sa.Column("is_active", sa.Boolean(), nullable=False))
+    op.add_column("users", sa.Column("is_superuser", sa.Boolean(), nullable=False))
+    op.add_column("users", sa.Column("is_verified", sa.Boolean(), nullable=False))
 
 
 def downgrade() -> None:
-    op.drop_column('users', 'is_verified')
-    op.drop_column('users', 'is_superuser')
-    op.drop_column('users', 'is_active')
-    op.drop_constraint(None, 'users', type_='foreignkey')
-    op.create_foreign_key('users_role_id_fkey', 'users', 'roles', ['role_id'], ['id'])
+    op.drop_column("users", "is_verified")
+    op.drop_column("users", "is_superuser")
+    op.drop_column("users", "is_active")
+    op.drop_constraint(None, "users", type_="foreignkey")
+    op.create_foreign_key("users_role_id_fkey", "users", "roles", ["role_id"], ["id"])
     op.create_table(
-        'roles',
-        sa.Column('id', sa.INTEGER(), autoincrement=True, nullable=False),
-        sa.Column('name', sa.VARCHAR(), autoincrement=False, nullable=False),
-        sa.Column('permissions', postgresql.JSON(astext_type=sa.Text()), autoincrement=False, nullable=True),
-        sa.PrimaryKeyConstraint('id', name='roles_pkey')
+        "roles",
+        sa.Column("id", sa.INTEGER(), autoincrement=True, nullable=False),
+        sa.Column("name", sa.VARCHAR(), autoincrement=False, nullable=False),
+        sa.Column(
+            "permissions",
+            postgresql.JSON(astext_type=sa.Text()),
+            autoincrement=False,
+            nullable=True,
+        ),
+        sa.PrimaryKeyConstraint("id", name="roles_pkey"),
     )
-    op.drop_table('role')
+    op.drop_table("role")

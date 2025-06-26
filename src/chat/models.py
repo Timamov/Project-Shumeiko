@@ -1,5 +1,8 @@
 from sqlalchemy import Column, Integer, String
+
 from src.auth.connection import Base
+
+
 class Messages(Base):
     __tablename__ = "messages"  # Указываем имя таблицы
 
