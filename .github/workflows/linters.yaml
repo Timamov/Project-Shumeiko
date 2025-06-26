@@ -30,7 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry init -n
 
           poetry install
           poetry add black
